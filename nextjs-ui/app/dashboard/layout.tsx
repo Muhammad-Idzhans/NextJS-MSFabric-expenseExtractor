@@ -7,8 +7,8 @@ import { DocumentProvider } from '../context/DocumentContext';
 
 const navItems = [
   { label: 'Add Document', icon: 'bi-file-earmark-plus', href: '/dashboard/add' },
-  { label: 'Invoices', icon: 'bi-receipt', href: '/dashboard/invoices', disabled: true },
-  { label: 'Receipts', icon: 'bi-receipt-cutoff', href: '/dashboard/receipts', disabled: true },
+  { label: 'Invoices', icon: 'bi-receipt', href: '/dashboard/invoices', disabled: false },
+  { label: 'Receipts', icon: 'bi-receipt-cutoff', href: '/dashboard/receipts', disabled: false },
 ];
 
 const comingSoon = [

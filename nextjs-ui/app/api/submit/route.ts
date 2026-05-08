@@ -159,6 +159,20 @@ export async function POST(req: Request) {
       });
     }
 
+    // --- 3. SAVE JSON TO BLOB STORAGE ---
+    const jsonContainerName = docType === 'invoice' ? 'invoices-json' : 'receipts-json';
+    const jsonContainerClient = blobServiceClient.getContainerClient(jsonContainerName);
+    await jsonContainerClient.createIfNotExists();
+    
+    const jsonBlobName = `${baseName}_${timestamp}.json`;
+    const jsonBlockBlobClient = jsonContainerClient.getBlockBlobClient(jsonBlobName);
+    
+    const jsonBuffer = Buffer.from(JSON.stringify(flattenedEvents, null, 2));
+    await jsonBlockBlobClient.uploadData(jsonBuffer, {
+      blobHTTPHeaders: { blobContentType: 'application/json' }
+    });
+    console.log(`[BLOB] Uploaded JSON to ${jsonContainerName}/${jsonBlobName}`);
+
     // Send the batch to Fabric Eventstream
     const producer = new EventHubProducerClient(eventHubConnectionString);
     const batch = await producer.createBatch();
